@@ -12,7 +12,7 @@ const claimUsernameFormSchema = z.object({
   username: z
     .string()
     .min(3, { message: 'O usuário precisa ter pelo menos 3 letras' })
-    .regex(/^[a-z\\-]+)$/i, {
+    .regex(/^([a-z\\-]+)$/i, {
       message: 'O usuário precisa ter apenas letras e hífens.',
     })
     .transform((username) => username.toLocaleLowerCase()),

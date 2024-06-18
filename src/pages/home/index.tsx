@@ -5,7 +5,7 @@ import previewImage from '../../assets/app-preview.png'
 import Image from 'next/image'
 import ClaimUsernameForm from './components/ClaimUsernameForm'
 
-export default function Home() {
+const Home: React.FC = () => {
   return (
     <HomeContainer>
       <Hero>
@@ -29,3 +29,5 @@ export default function Home() {
     </HomeContainer>
   )
 }
+
+export default Home

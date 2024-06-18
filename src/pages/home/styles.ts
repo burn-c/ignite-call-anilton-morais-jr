@@ -4,7 +4,6 @@ export const HomeContainer = styled('div', {
   maxWidth: 'calc(100vw - (100vw - 1168px) / 2)',
   height: '100vh',
   marginLeft: 'auto',
-  background: 'red',
   display: 'flex',
   alignItems: 'center',
   gap: '$20',
