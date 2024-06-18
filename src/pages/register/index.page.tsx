@@ -1,15 +1,18 @@
-import React from 'react'
+import { api } from '@/lib/axios'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { Button, Heading, MultiStep, Text, TextInput } from '@ignite-ui/react'
+import { AxiosError } from 'axios'
+import { useRouter } from 'next/router'
+import { ArrowRight } from 'phosphor-react'
+import React, { useEffect } from 'react'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 import {
   FormError,
   RegisterContainer,
   RegisterForm,
   RegisterHeader,
 } from './styles'
-import { Button, Heading, MultiStep, Text, TextInput } from '@ignite-ui/react'
-import { ArrowRight } from 'phosphor-react'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
 
 // import { Container } from './styles';
 
@@ -32,14 +35,32 @@ const Register: React.FC = () => {
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerFormSchema),
   })
 
+  const router = useRouter()
+
   async function handleRegister(data: RegisterFormData) {
-    console.log(data)
+    try {
+      await api.post('/users', {
+        name: data.name,
+        username: data.username,
+      })
+    } catch (error) {
+      if (error instanceof AxiosError && error?.response?.data?.message) {
+        alert(error?.response?.data?.message)
+      }
+    }
   }
+
+  useEffect(() => {
+    if (router.query.username) {
+      setValue('username', String(router.query.username))
+    }
+  }, [router.query?.username, setValue])
 
   return (
     <RegisterContainer>
