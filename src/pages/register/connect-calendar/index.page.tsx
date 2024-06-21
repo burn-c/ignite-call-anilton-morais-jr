@@ -17,6 +17,10 @@ const ConnectCalendar: React.FC = () => {
     await signIn('google')
   }
 
+  async function handleNextPage() {
+    await router.push('/register/time-intervals')
+  }
+
   return (
     <RegisterContainer>
       <RegisterHeader>
@@ -47,7 +51,7 @@ const ConnectCalendar: React.FC = () => {
             permissões de acesso ao Google Calendar
           </AuthError>
         )}
-        <Button type="submit" disabled={!isSignIn}>
+        <Button disabled={!isSignIn} onClick={handleNextPage}>
           Próximo passo
           <ArrowRight />
         </Button>
