@@ -8,4 +8,7 @@ interface User {
     username: string
     avatar_url: string
   }
+  interface Session {
+    user: User
+  }
 }
