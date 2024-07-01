@@ -4,8 +4,19 @@ import { Hero, HomeContainer, Preview } from './styles'
 import previewImage from '../../assets/app-preview.png'
 import Image from 'next/image'
 import ClaimUsernameForm from './components/ClaimUsernameForm'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/router'
 
 const Home: React.FC = () => {
+  const session = useSession()
+  const router = useRouter()
+
+  const isSignIn = session.status === 'authenticated'
+
+  if (isSignIn) {
+    router.push(`/schedule/${session.data?.user.username}`)
+  }
+
   return (
     <HomeContainer>
       <Hero>
