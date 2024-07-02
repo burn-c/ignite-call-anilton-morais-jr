@@ -9,7 +9,7 @@ import {
 import Calendar from '@/components/Calendar'
 
 const CalendarStep: React.FC = () => {
-  const isDateSelected = true
+  const isDateSelected = false
   return (
     <CalendarStepContainer isTimePickerOpen={isDateSelected}>
       <Calendar />
