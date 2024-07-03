@@ -23,7 +23,15 @@ interface CalendarWeek {
 
 type CalendarWeeks = CalendarWeek[]
 
-const Calendar: React.FC = () => {
+interface CalendarProps {
+  selectedDate?: Date | null
+  onDateSelected: (date: Date) => void
+}
+
+const Calendar: React.FC<CalendarProps> = ({
+  selectedDate,
+  onDateSelected,
+}) => {
   const [currentDate, setCurrentDate] = useState(() => {
     return dayjs().set('date', 1)
   })
@@ -70,7 +78,10 @@ const Calendar: React.FC = () => {
 
     const calendarDays = [
       ...previousMonthFillArray.map((date) => ({ date, disabled: true })),
-      ...daysInMonth.map((date) => ({ date, disabled: false })),
+      ...daysInMonth.map((date) => ({
+        date,
+        disabled: date.endOf('day').isBefore(new Date()),
+      })),
       ...nextMonthFillArray.map((date) => ({ date, disabled: true })),
     ]
 
@@ -121,7 +132,10 @@ const Calendar: React.FC = () => {
                 {days.map(({ date, disabled }) => {
                   return (
                     <td key={date.toString()}>
-                      <CalendarDay disabled={disabled}>
+                      <CalendarDay
+                        onClick={() => onDateSelected(date.toDate())}
+                        disabled={disabled}
+                      >
                         {date.date()}
                       </CalendarDay>
                     </td>
