@@ -34,6 +34,7 @@ const CalendarStep: React.FC = () => {
   const selectedDateWithoutTime = selectedDate
     ? dayjs(selectedDate).format('YYYY-MM-DD')
     : null
+
   const { data: availability } = useQuery<Availability>({
     queryKey: ['availabitiy', selectedDateWithoutTime],
     queryFn: async () => {
