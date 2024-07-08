@@ -40,7 +40,7 @@ const CalendarStep: React.FC = () => {
     queryFn: async () => {
       const response = await api.get(`/users/${username}/availability`, {
         params: {
-          date: dayjs(selectedDate).format('YYYY-MM-DD'),
+          date: selectedDateWithoutTime,
         },
       })
 
@@ -64,7 +64,7 @@ const CalendarStep: React.FC = () => {
                   key={hour}
                   disabled={!availability.availableTimes.includes(hour)}
                 >
-                  {String(hour).padStart(2, '0')}::00h
+                  {String(hour).padStart(2, '0')}:00h
                 </TimePickerListItem>
               )
             })}

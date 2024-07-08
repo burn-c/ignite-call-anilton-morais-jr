@@ -33,6 +33,7 @@ interface CalendarProps {
 
 interface BlockedDates {
   blockedWeekDays: number[]
+  blockedDates: number[]
 }
 
 const Calendar: React.FC<CalendarProps> = ({
@@ -54,13 +55,13 @@ const Calendar: React.FC<CalendarProps> = ({
     queryKey: [
       'blocked-dates',
       currentDate.get('year'),
-      currentDate.get('month'),
+      String(currentDate.get('month') + 1).padStart(2, '0'),
     ],
     queryFn: async () => {
       const response = await api.get(`/users/${username}/blocked-dates`, {
         params: {
           year: currentDate.get('year'),
-          month: currentDate.get('month'),
+          month: String(currentDate.get('month') + 1).padStart(2, '0'),
         },
       })
 
@@ -92,7 +93,7 @@ const Calendar: React.FC<CalendarProps> = ({
     const lastWeekDay = currentDate.endOf('month').get('day')
 
     const nextMonthFillArray = Array.from({
-      length: 7 - (lastWeekDay + 1),
+      length: 7 - (lastWeekDay + 1), // Get the last days to complete the week
     }).map((_, i) => {
       return currentDate.endOf('month').add(i + 1, 'day')
     })
@@ -103,14 +104,16 @@ const Calendar: React.FC<CalendarProps> = ({
         date,
         disabled:
           date.endOf('day').isBefore(new Date()) ||
-          blockedDates.blockedWeekDays.includes(date.get('day')),
+          blockedDates.blockedWeekDays.includes(date.get('day')) ||
+          blockedDates.blockedDates.includes(date.get('date')),
       })),
       ...nextMonthFillArray.map((date) => ({ date, disabled: true })),
     ]
 
+    // Separate in week
     const calendarWeeks = calendarDays.reduce<CalendarWeeks>(
       (weeks, _, i, original) => {
-        const isNewWeek = i % 7 === 0
+        const isNewWeek = i % 7 === 0 // Check if is forming a new week
         if (isNewWeek) {
           weeks.push({
             week: i / 7 + 1,
