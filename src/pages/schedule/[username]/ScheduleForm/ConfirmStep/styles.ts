@@ -39,6 +39,8 @@ export const FormHeader = styled('div', {
 
 export const FormActions = styled('div', {
   color: '#f75a58',
+  display: 'flex',
+  justifyContent: 'space-between',
 })
 
 export const FormError = styled(Text, {
