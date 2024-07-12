@@ -24,6 +24,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { convertTimeStringToMinutes } from '@/utils/convert-time-string-to-minutes'
 import { api } from '@/lib/axios'
 import { useRouter } from 'next/router'
+import { NextSeo } from 'next-seo'
 
 const timeIntervalsFormSchema = z.object({
   intervals: z
@@ -108,80 +109,83 @@ const TimeIntervals: React.FC = () => {
   }
 
   return (
-    <RegisterContainer>
-      <RegisterHeader>
-        <Heading as={'strong'}>Quase lá</Heading>
-        <Text>
-          Defina o intervalo de horários que você está disponível em cada dia da
-          semana
-        </Text>
-        <MultiStep size={4} currentStep={3} />
-      </RegisterHeader>
-      <Form<TimeIntervalsFormInput, TimeIntervalsFormOutput>
-        control={control}
-        onSubmit={async ({ data }) => await handleSetTimeIntervals(data)}
-      >
-        <IntervalBox>
-          <IntervalsContainer>
-            {fields.map((field, index) => {
-              return (
-                <IntervalItem key={field.id}>
-                  <IntervalDay>
-                    <Controller
-                      name={`intervals.${index}.enabled`}
-                      control={control}
-                      render={({ field }) => {
-                        return (
-                          <Checkbox
-                            onCheckedChange={(checked) => {
-                              field.onChange(checked === true)
-                            }}
-                            checked={field.value}
-                          />
-                        )
-                      }}
-                    />
+    <>
+      <NextSeo title="Selecione sua disponibilidade | Ignite Call" noindex />
+      <RegisterContainer>
+        <RegisterHeader>
+          <Heading as={'strong'}>Quase lá</Heading>
+          <Text>
+            Defina o intervalo de horários que você está disponível em cada dia
+            da semana
+          </Text>
+          <MultiStep size={4} currentStep={3} />
+        </RegisterHeader>
+        <Form<TimeIntervalsFormInput, TimeIntervalsFormOutput>
+          control={control}
+          onSubmit={async ({ data }) => await handleSetTimeIntervals(data)}
+        >
+          <IntervalBox>
+            <IntervalsContainer>
+              {fields.map((field, index) => {
+                return (
+                  <IntervalItem key={field.id}>
+                    <IntervalDay>
+                      <Controller
+                        name={`intervals.${index}.enabled`}
+                        control={control}
+                        render={({ field }) => {
+                          return (
+                            <Checkbox
+                              onCheckedChange={(checked) => {
+                                field.onChange(checked === true)
+                              }}
+                              checked={field.value}
+                            />
+                          )
+                        }}
+                      />
 
-                    <Text>{weekDays[field.weekDay]}</Text>
-                  </IntervalDay>
-                  <IntervalInputs>
-                    <TextInput
-                      size="sm"
-                      type="time"
-                      step={60}
-                      {...register(`intervals.${index}.startTime`)}
-                      disabled={intervals[index].enabled === false}
-                      crossOrigin={undefined}
-                      onPointerEnterCapture={undefined}
-                      onPointerLeaveCapture={undefined}
-                    />
-                    <TextInput
-                      size="sm"
-                      type="time"
-                      step={60}
-                      {...register(`intervals.${index}.endTime`)}
-                      disabled={intervals[index].enabled === false}
-                      crossOrigin={undefined}
-                      onPointerEnterCapture={undefined}
-                      onPointerLeaveCapture={undefined}
-                    />
-                  </IntervalInputs>
-                </IntervalItem>
-              )
-            })}
-          </IntervalsContainer>
-          {errors.intervals && (
-            <FormErrors size={'sm'}>
-              {errors.intervals.root?.message}
-            </FormErrors>
-          )}
-          <Button disabled={isSubmitting}>
-            Próximo passo
-            <ArrowRight />
-          </Button>
-        </IntervalBox>
-      </Form>
-    </RegisterContainer>
+                      <Text>{weekDays[field.weekDay]}</Text>
+                    </IntervalDay>
+                    <IntervalInputs>
+                      <TextInput
+                        size="sm"
+                        type="time"
+                        step={60}
+                        {...register(`intervals.${index}.startTime`)}
+                        disabled={intervals[index].enabled === false}
+                        crossOrigin={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                      />
+                      <TextInput
+                        size="sm"
+                        type="time"
+                        step={60}
+                        {...register(`intervals.${index}.endTime`)}
+                        disabled={intervals[index].enabled === false}
+                        crossOrigin={undefined}
+                        onPointerEnterCapture={undefined}
+                        onPointerLeaveCapture={undefined}
+                      />
+                    </IntervalInputs>
+                  </IntervalItem>
+                )
+              })}
+            </IntervalsContainer>
+            {errors.intervals && (
+              <FormErrors size={'sm'}>
+                {errors.intervals.root?.message}
+              </FormErrors>
+            )}
+            <Button disabled={isSubmitting}>
+              Próximo passo
+              <ArrowRight />
+            </Button>
+          </IntervalBox>
+        </Form>
+      </RegisterContainer>
+    </>
   )
 }
 

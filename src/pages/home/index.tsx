@@ -6,6 +6,7 @@ import Image from 'next/image'
 import ClaimUsernameForm from './components/ClaimUsernameForm'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/router'
+import { NextSeo } from 'next-seo'
 
 const Home: React.FC = () => {
   const session = useSession()
@@ -18,26 +19,33 @@ const Home: React.FC = () => {
   }
 
   return (
-    <HomeContainer>
-      <Hero>
-        <Heading size="4xl">Agendamento descomplicado</Heading>
-        <Text size="xl">
-          Conecte seu calendário e permita que as pessoas marquem agendamentos
-          no seu tempo livre.
-        </Text>
+    <>
+      <NextSeo
+        title="Descomplique sua agenda | Ignite Call"
+        description="Conecte seu calendário e permita que as pessoas marquem agendamentos
+          no seu tempo livre."
+      />
+      <HomeContainer>
+        <Hero>
+          <Heading size="4xl">Agendamento descomplicado</Heading>
+          <Text size="xl">
+            Conecte seu calendário e permita que as pessoas marquem agendamentos
+            no seu tempo livre.
+          </Text>
 
-        <ClaimUsernameForm />
-      </Hero>
-      <Preview>
-        <Image
-          src={previewImage}
-          height={400}
-          quality={100}
-          priority
-          alt="Calendário simbolizando aplicação em funcionamento"
-        />
-      </Preview>
-    </HomeContainer>
+          <ClaimUsernameForm />
+        </Hero>
+        <Preview>
+          <Image
+            src={previewImage}
+            height={400}
+            quality={100}
+            priority
+            alt="Calendário simbolizando aplicação em funcionamento"
+          />
+        </Preview>
+      </HomeContainer>
+    </>
   )
 }
 
