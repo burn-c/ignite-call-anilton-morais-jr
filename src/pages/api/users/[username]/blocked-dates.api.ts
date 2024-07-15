@@ -46,12 +46,13 @@ export default async function hendle(
       COUNT(s.date) as amount,
       ((uti.time_end_in_minutes - uti.time_start_in_minutes) / 60) as size
     FROM schedulings s
-    LEFT JOIN user_time_intervals uti ON uti.week_day = WEEKDAY(DATE_ADD(s.date, INTERVAL 1 DAY))
+    LEFT JOIN user_time_intervals uti ON uti.week_day = EXTRACT(DOW FROM S.date + INTERVAL '1 day')
     WHERE s.user_id = ${user.id}
-    AND DATE_FORMAT(s.date, "%Y-%m") = ${`${year}-${month}`}
+    AND EXTRACT(YEAR FROM S.date) = ${year}::int
+    AND EXTRACT(MONTH FROM S.date) = ${month}::int
     GROUP BY EXTRACT(DAY FROM s.date),
       ((uti.time_end_in_minutes - uti.time_start_in_minutes) / 60)
-    HAVING amount >= size
+    HAVING COUNT(S.date) >= ((UTI.time_end_in_minutes - UTI.time_start_in_minutes) / 60)
   `
 
   const blockedDates = blockedDatesRaw.map((item) => item.date)
