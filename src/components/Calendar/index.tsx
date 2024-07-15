@@ -36,10 +36,7 @@ interface BlockedDates {
   blockedDates: number[]
 }
 
-const Calendar: React.FC<CalendarProps> = ({
-  selectedDate,
-  onDateSelected,
-}) => {
+const Calendar: React.FC<CalendarProps> = ({ onDateSelected }) => {
   const [currentDate, setCurrentDate] = useState(() => {
     return dayjs().set('date', 1)
   })
